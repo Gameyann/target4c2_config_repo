@@ -1,0 +1,51 @@
+server:
+  port: ${COMMERCE_OPERATION_SERVICE_PORT:8085}
+
+spring:
+  application:
+    name: commerce-operation-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${COMMERCE_DB_NAME:target4c2_commerce}
+    username: ${POSTGRES_USER:target4c2}
+    password: ${POSTGRES_PASSWORD:target4c2}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+
+target4c2:
+  commerce:
+    currency: ${COMMERCE_DEFAULT_CURRENCY:XAF}
+    invoice-prefix: ${INVOICE_PREFIX:T4C2}
+    tax-enabled: ${TAX_ENABLED:false}
+    refund-workflow-enabled: true
+  stripe:
+    api-key: ${STRIPE_API_KEY:}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
+    success-url: ${STRIPE_SUCCESS_URL:http://localhost:4200/payment/success}
+    cancel-url: ${STRIPE_CANCEL_URL:http://localhost:4200/payment/cancel}
+  storage:
+    s3:
+      bucket: ${COMMERCE_S3_BUCKET:target4c2-commerce}
+      region: ${AWS_REGION:eu-west-3}
+      access-key-id: ${AWS_ACCESS_KEY_ID:}
+      secret-access-key: ${AWS_SECRET_ACCESS_KEY:}
+  operations:
+    reporting-enabled: true
+    export-max-rows: ${EXPORT_MAX_ROWS:50000}
+    reconciliation-enabled: true

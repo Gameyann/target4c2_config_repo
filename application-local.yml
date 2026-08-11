@@ -1,0 +1,26 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+spring:
+  cloud:
+    config:
+      fail-fast: false
+  datasource:
+    username: ${POSTGRES_USER:target4c2}
+    password: ${POSTGRES_PASSWORD:target4c2}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+target4c2:
+  storage:
+    s3:
+      endpoint: ${AWS_S3_ENDPOINT:http://localhost:9000}
+      path-style-access-enabled: true
+  mail:
+    from: ${MAIL_FROM:no-reply@target4c2.local}

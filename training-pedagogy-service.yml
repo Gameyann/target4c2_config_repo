@@ -1,0 +1,49 @@
+server:
+  port: ${TRAINING_PEDAGOGY_SERVICE_PORT:8084}
+
+spring:
+  application:
+    name: training-pedagogy-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${TRAINING_DB_NAME:target4c2_training}
+    username: ${POSTGRES_USER:target4c2}
+    password: ${POSTGRES_PASSWORD:target4c2}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  servlet:
+    multipart:
+      max-file-size: ${TRAINING_MAX_FILE_SIZE:300MB}
+      max-request-size: ${TRAINING_MAX_REQUEST_SIZE:350MB}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+
+target4c2:
+  training:
+    attendance-grace-period-minutes: ${ATTENDANCE_GRACE_PERIOD_MINUTES:10}
+    session-recording-enabled: ${SESSION_RECORDING_ENABLED:true}
+    teacher-validation-workflow-enabled: true
+    assignment-late-submission-enabled: ${ASSIGNMENT_LATE_SUBMISSION_ENABLED:true}
+  storage:
+    s3:
+      bucket: ${TRAINING_S3_BUCKET:target4c2-training}
+      region: ${AWS_REGION:eu-west-3}
+      access-key-id: ${AWS_ACCESS_KEY_ID:}
+      secret-access-key: ${AWS_SECRET_ACCESS_KEY:}
+  notifications:
+    reminders-enabled: true
+    session-reminder-delay-minutes: ${SESSION_REMINDER_DELAY_MINUTES:60}

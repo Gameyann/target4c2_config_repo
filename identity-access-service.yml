@@ -1,0 +1,58 @@
+server:
+  port: ${IDENTITY_ACCESS_SERVICE_PORT:8081}
+
+spring:
+  application:
+    name: identity-access-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${IDENTITY_DB_NAME:target4c2_identity}
+    username: ${POSTGRES_USER:target4c2}
+    password: ${POSTGRES_PASSWORD:target4c2}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: ${JWT_ISSUER_URI:http://localhost:8081}
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8081}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+
+target4c2:
+  identity:
+    account-verification-token-ttl-minutes: ${ACCOUNT_VERIFICATION_TOKEN_TTL_MINUTES:30}
+    password-reset-token-ttl-minutes: ${PASSWORD_RESET_TOKEN_TTL_MINUTES:20}
+    refresh-token-ttl-days: ${REFRESH_TOKEN_TTL_DAYS:30}
+    max-login-attempts: ${MAX_LOGIN_ATTEMPTS:5}
+    lock-duration-minutes: ${ACCOUNT_LOCK_DURATION_MINUTES:15}
+    mfa:
+      enabled: ${MFA_ENABLED:true}
+  admin:
+    bootstrap-email: ${ADMIN_BOOTSTRAP_EMAIL:admin@target4c2.local}

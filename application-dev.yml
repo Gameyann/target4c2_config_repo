@@ -1,0 +1,26 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://discovery-service:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+spring:
+  cloud:
+    config:
+      fail-fast: true
+  datasource:
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+
+target4c2:
+  storage:
+    s3:
+      endpoint: ${AWS_S3_ENDPOINT:}
+      path-style-access-enabled: false
+  mail:
+    from: ${MAIL_FROM}

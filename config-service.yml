@@ -1,0 +1,30 @@
+server:
+  port: ${CONFIG_SERVICE_PORT:8888}
+
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${CONFIG_GIT_URI:https://github.com/ORG/target4c2-config-repo.git}
+          username: ${CONFIG_GIT_USERNAME:}
+          password: ${CONFIG_GIT_TOKEN:}
+          default-label: ${CONFIG_GIT_BRANCH:main}
+          clone-on-start: true
+          force-pull: true
+          timeout: 15
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env,refresh

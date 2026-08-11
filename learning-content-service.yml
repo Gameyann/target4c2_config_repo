@@ -1,0 +1,51 @@
+server:
+  port: ${LEARNING_CONTENT_SERVICE_PORT:8083}
+
+spring:
+  application:
+    name: learning-content-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${LEARNING_DB_NAME:target4c2_learning}
+    username: ${POSTGRES_USER:target4c2}
+    password: ${POSTGRES_PASSWORD:target4c2}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  servlet:
+    multipart:
+      max-file-size: ${LEARNING_MAX_FILE_SIZE:500MB}
+      max-request-size: ${LEARNING_MAX_REQUEST_SIZE:600MB}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+
+target4c2:
+  learning:
+    certificate-template-enabled: true
+    quiz-attempt-limit: ${QUIZ_ATTEMPT_LIMIT:3}
+    placement-test-enabled: true
+    recommendation-engine-enabled: ${LEARNING_RECOMMENDATION_ENGINE_ENABLED:true}
+  storage:
+    s3:
+      bucket: ${LEARNING_S3_BUCKET:target4c2-learning}
+      region: ${AWS_REGION:eu-west-3}
+      access-key-id: ${AWS_ACCESS_KEY_ID:}
+      secret-access-key: ${AWS_SECRET_ACCESS_KEY:}
+  media:
+    transcoding-enabled: ${LEARNING_MEDIA_TRANSCODING_ENABLED:false}
+    allowed-document-types: application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    allowed-video-types: video/mp4,video/webm
+    allowed-audio-types: audio/mpeg,audio/wav,audio/ogg

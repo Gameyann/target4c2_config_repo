@@ -1,0 +1,52 @@
+server:
+  port: ${PUBLIC_CMS_MARKETING_SERVICE_PORT:8082}
+
+spring:
+  application:
+    name: public-cms-marketing-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${PUBLIC_CMS_DB_NAME:target4c2_public_cms}
+    username: ${POSTGRES_USER:target4c2}
+    password: ${POSTGRES_PASSWORD:target4c2}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  servlet:
+    multipart:
+      max-file-size: ${CMS_MAX_FILE_SIZE:200MB}
+      max-request-size: ${CMS_MAX_REQUEST_SIZE:250MB}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+
+target4c2:
+  cms:
+    publication-workflow-enabled: true
+    preview-token-ttl-minutes: ${CMS_PREVIEW_TOKEN_TTL_MINUTES:60}
+    public-cache-ttl-seconds: ${CMS_PUBLIC_CACHE_TTL_SECONDS:300}
+  marketing:
+    newsletter-enabled: true
+    campaign-default-sender: ${MARKETING_DEFAULT_SENDER:no-reply@target4c2.local}
+  storage:
+    s3:
+      bucket: ${PUBLIC_CMS_S3_BUCKET:target4c2-public-cms}
+      region: ${AWS_REGION:eu-west-3}
+      access-key-id: ${AWS_ACCESS_KEY_ID:}
+      secret-access-key: ${AWS_SECRET_ACCESS_KEY:}
+  media:
+    allowed-image-types: image/jpeg,image/png,image/webp
+    allowed-video-types: video/mp4,video/webm
+    allowed-audio-types: audio/mpeg,audio/wav,audio/ogg

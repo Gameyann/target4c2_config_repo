@@ -1,0 +1,60 @@
+server:
+  port: ${API_GATEWAY_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8081}
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - AddResponseHeader=X-Gateway, target4c2-api-gateway
+          routes:
+            - id: identity-access-service
+              uri: lb://identity-access-service
+              predicates:
+                - Path=/api/v1/auth/**,/api/v1/users/**,/api/v1/roles/**,/api/v1/permissions/**,/api/v1/security/**
+            - id: public-cms-marketing-service
+              uri: lb://public-cms-marketing-service
+              predicates:
+                - Path=/api/v1/public/**,/api/v1/cms/**,/api/v1/marketing/**,/api/v1/media/public/**
+            - id: learning-content-service
+              uri: lb://learning-content-service
+              predicates:
+                - Path=/api/v1/catalog/**,/api/v1/courses/**,/api/v1/lessons/**,/api/v1/quizzes/**,/api/v1/content-media/**
+            - id: training-pedagogy-service
+              uri: lb://training-pedagogy-service
+              predicates:
+                - Path=/api/v1/classes/**,/api/v1/sessions/**,/api/v1/assignments/**,/api/v1/evaluations/**,/api/v1/teacher/**
+            - id: commerce-operation-service
+              uri: lb://commerce-operation-service
+              predicates:
+                - Path=/api/v1/orders/**,/api/v1/payments/**,/api/v1/subscriptions/**,/api/v1/coupons/**,/api/v1/operations/**,/api/v1/reports/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+
+target4c2:
+  gateway:
+    rate-limit:
+      enabled: true
+      replenish-rate: ${GATEWAY_RATE_LIMIT_REPLENISH:100}
+      burst-capacity: ${GATEWAY_RATE_LIMIT_BURST:200}
+    public-paths:
+      - /api/v1/public/**
+      - /api/v1/auth/**
+      - /actuator/health
