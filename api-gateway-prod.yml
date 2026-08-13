@@ -1,0 +1,21 @@
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    display-request-duration: true
+    operations-sorter: method
+    tags-sorter: alpha
+    urls-primary-name: "Identity & Access"
+    urls:
+      - name: "Identity & Access"
+        url: /v3/api-docs/identity-access-service
+      - name: "Vitrine Publique / CMS Marketing"
+        url: /v3/api-docs/public-cms-marketing-service
+      - name: "Learning Content"
+        url: /v3/api-docs/learning-content-service
+      - name: "Training & Pedagogy"
+        url: /v3/api-docs/training-pedagogy-service
+      - name: "Commerce & Operations"
+        url: /v3/api-docs/commerce-operation-service

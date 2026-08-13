@@ -20,6 +20,36 @@ spring:
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
             - AddResponseHeader=X-Gateway, target4c2-api-gateway
           routes:
+            - id: openapi-identity-access-service
+              uri: lb://identity-access-service
+              predicates:
+                - Path=/v3/api-docs/identity-access-service
+              filters:
+                - RewritePath=/v3/api-docs/identity-access-service, /v3/api-docs
+            - id: openapi-public-cms-marketing-service
+              uri: lb://public-cms-marketing-service
+              predicates:
+                - Path=/v3/api-docs/public-cms-marketing-service
+              filters:
+                - RewritePath=/v3/api-docs/public-cms-marketing-service, /v3/api-docs
+            - id: openapi-learning-content-service
+              uri: lb://learning-content-service
+              predicates:
+                - Path=/v3/api-docs/learning-content-service
+              filters:
+                - RewritePath=/v3/api-docs/learning-content-service, /v3/api-docs
+            - id: openapi-training-pedagogy-service
+              uri: lb://training-pedagogy-service
+              predicates:
+                - Path=/v3/api-docs/training-pedagogy-service
+              filters:
+                - RewritePath=/v3/api-docs/training-pedagogy-service, /v3/api-docs
+            - id: openapi-commerce-operation-service
+              uri: lb://commerce-operation-service
+              predicates:
+                - Path=/v3/api-docs/commerce-operation-service
+              filters:
+                - RewritePath=/v3/api-docs/commerce-operation-service, /v3/api-docs
             - id: identity-access-service
               uri: lb://identity-access-service
               predicates:
@@ -49,6 +79,8 @@ eureka:
     instance-id: ${spring.application.name}:${server.port}
 
 target4c2:
+  identity:
+    jwt-secret: ${JWT_SECRET:target4c2-local-development-secret-key-change-me-256-bits}
   gateway:
     rate-limit:
       enabled: true
@@ -57,4 +89,29 @@ target4c2:
     public-paths:
       - /api/v1/public/**
       - /api/v1/auth/**
+      - /v3/api-docs/**
+      - /swagger-ui.html
+      - /swagger-ui/**
       - /actuator/health
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    display-request-duration: true
+    operations-sorter: method
+    tags-sorter: alpha
+    urls-primary-name: "Identity & Access"
+    urls:
+      - name: "Identity & Access"
+        url: /v3/api-docs/identity-access-service
+      - name: "Vitrine Publique / CMS Marketing"
+        url: /v3/api-docs/public-cms-marketing-service
+      - name: "Learning Content"
+        url: /v3/api-docs/learning-content-service
+      - name: "Training & Pedagogy"
+        url: /v3/api-docs/training-pedagogy-service
+      - name: "Commerce & Operations"
+        url: /v3/api-docs/commerce-operation-service
