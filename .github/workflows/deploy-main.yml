@@ -1,0 +1,30 @@
+name: Deploy Config Repository
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Restart services using updated config
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Restart Config Server and dependent services
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          script: |
+            set -eu
+            cd "${{ secrets.VPS_APP_DIR }}/backend"
+            docker compose -f docker-compose.prod.yml restart config-service
+            sleep 20
+            docker compose -f docker-compose.prod.yml restart api-gateway identity-access-service public-cms-marketing-service learning-content-service training-pedagogy-service commerce-operation-service
