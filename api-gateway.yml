@@ -65,7 +65,7 @@ spring:
             - id: training-pedagogy-service
               uri: lb://training-pedagogy-service
               predicates:
-                - Path=/api/v1/training/**,/api/v1/classes/**,/api/v1/sessions/**,/api/v1/assignments/**,/api/v1/evaluations/**,/api/v1/teacher/**
+                - Path=/api/v1/training/**,/api/v1/teacher/**,/api/v1/classes/**,/api/v1/sessions/**,/api/v1/assignments/**,/api/v1/evaluations/**
             - id: commerce-operation-service
               uri: lb://commerce-operation-service
               predicates:
