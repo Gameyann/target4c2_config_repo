@@ -34,6 +34,8 @@ eureka:
     instance-id: ${spring.application.name}:${server.port}
 
 target4c2:
+  identity:
+    jwt-secret: ${JWT_SECRET:target4c2-local-development-secret-key-change-me-256-bits}
   commerce:
     currency: ${COMMERCE_DEFAULT_CURRENCY:XAF}
     invoice-prefix: ${INVOICE_PREFIX:T4C2}
