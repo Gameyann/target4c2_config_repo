@@ -53,7 +53,7 @@ spring:
             - id: identity-access-service
               uri: lb://identity-access-service
               predicates:
-                - Path=/api/v1/auth/**,/api/v1/users/**,/api/v1/roles/**,/api/v1/permissions/**,/api/v1/security/**,/api/v1/candidate/**
+                - Path=/api/v1/auth/**,/api/v1/users/**,/api/v1/roles/**,/api/v1/permissions/**,/api/v1/security/**,/api/v1/candidate/**,/api/v1/admin/identity/**
             - id: public-cms-marketing-service
               uri: lb://public-cms-marketing-service
               predicates:
@@ -61,15 +61,15 @@ spring:
             - id: learning-content-service
               uri: lb://learning-content-service
               predicates:
-                - Path=/api/v1/learning/**,/api/v1/catalog/**,/api/v1/courses/**,/api/v1/lessons/**,/api/v1/quizzes/**,/api/v1/content-media/**
+                - Path=/api/v1/learning/**,/api/v1/catalog/**,/api/v1/courses/**,/api/v1/lessons/**,/api/v1/quizzes/**,/api/v1/content-media/**,/api/v1/admin/learning/**
             - id: training-pedagogy-service
               uri: lb://training-pedagogy-service
               predicates:
-                - Path=/api/v1/training/**,/api/v1/teacher/**,/api/v1/classes/**,/api/v1/sessions/**,/api/v1/assignments/**,/api/v1/evaluations/**
+                - Path=/api/v1/training/**,/api/v1/teacher/**,/api/v1/classes/**,/api/v1/sessions/**,/api/v1/assignments/**,/api/v1/evaluations/**,/api/v1/exams/**,/api/v1/admin/training/**,/api/v1/admin/exams/**
             - id: commerce-operation-service
               uri: lb://commerce-operation-service
               predicates:
-                - Path=/api/v1/commerce/**,/api/v1/orders/**,/api/v1/payments/**,/api/v1/subscriptions/**,/api/v1/coupons/**,/api/v1/operations/**,/api/v1/reports/**
+                - Path=/api/v1/commerce/**,/api/v1/orders/**,/api/v1/payments/**,/api/v1/subscriptions/**,/api/v1/coupons/**,/api/v1/operations/**,/api/v1/reports/**,/api/v1/admin/commerce/**
 
 eureka:
   client:
